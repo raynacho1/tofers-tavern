@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOFER'S TAVERN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="nav-logo">
+        TOFER'S TAVERN
+    </div>
+
+     <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#standings">Standings</a>
+    <a href="#teams">Teams</a>
+    <a href="#matchups">Matchups</a>
+    <a href="power-rankings.html">Power Rankings</a>
+    <a href="league-history.html">League History</a>
+
+    </div>
+
+</nav>
+    <header>
+        <h1 id="league-name">Loading League...</h1>
+	<p id="league-season">Loading season...</p>
+    </header>
+
+<main>
+
+    <h2>League Pulse</h2>
+    <p>What's happening around TOFER'S TAVERN.</p>
+
+    <section class="league-overview">
+
+    <div class="card">
+        <h3 id="pulse-week">--</h3>
+        <p>Current Week</p>
+    </div>
+
+    <div class="card">
+        <h3 id="pulse-leader">--</h3>
+        <div class="pulse-detail" id="pulse-leader-detail"></div>
+        <p>1st Place</p>
+    </div>
+
+    <div class="card">
+        <h3 id="pulse-points">--</h3>
+        <div class="pulse-detail" id="pulse-points-detail"></div>
+        <p>Points Leader</p>
+    </div>
+
+    <div class="card">
+        <h3 id="pulse-monster">--</h3>
+        <div class="pulse-detail" id="pulse-monster-detail"></div>
+        <p>Last Week's Monster</p>
+    </div>
+
+</section>
+
+<section class="matchups-section" id="matchups">
+
+    <h2 id="matchups-title">Weekly Matchups</h2>
+
+    <div id="matchups-container">
+        <p>Loading matchups...</p>
+    </div>
+
+</section>
+
+<section class="awards-section">
+
+    <div class="awards-heading">
+
+        <div>
+
+            <h2 id="awards-title">
+                Weekly Tavern Awards
+            </h2>
+
+            <p>
+                The best, worst, and most painful performances of the week.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="awards-container">
+
+        <p>Loading weekly awards...</p>
+
+    </div>
+
+</section>
+
+<section class="standings-section" id="standings">
+
+    <h2>Standings</h2>
+
+    <div class="standings-wrapper">
+
+        <table class="standings-table">
+
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Manager</th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+
+            <tbody id="standings-body">
+                <tr>
+                    <td colspan="6">Loading standings...</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<section class="teams-section" id="teams">
+
+        <h2>League Teams</h2>
+
+        <div id="teams-container">
+            <p>Loading teams...</p>
+        </div>
+
+</section>
+
+</main>
+
+<div id="roster-modal" class="roster-modal">
+
+    <div class="roster-modal-content">
+
+        <button id="close-roster" class="close-roster">
+            ×
+        </button>
+
+        <h2 id="roster-team-name">
+            Team Roster
+        </h2>
+
+        <p id="roster-manager"></p>
+
+        <div id="roster-players">
+            Loading roster...
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="site-footer">
+
+    <p>
+        TOFER'S TAVERN • Fantasy Football League
+    </p>
+
+    <p class="footer-small">
+        Powered by Sleeper data • Built by Ray
+    </p>
+
+</footer>
+
+<script src="script.js"></script><script src="script.js"></script>
+
+</body>
+
+</html>
+
