@@ -14,18 +14,8 @@ fetch(`https://api.sleeper.app/v1/league/${leagueID}`)
 	document.getElementById("league-season").textContent =
     	league.season + " Fantasy Football Season";
 
-        document.getElementById("team-count").textContent =
-            league.total_rosters;
-
-        document.getElementById("playoff-count").textContent =
-            league.settings.playoff_teams;
-
-        document.getElementById("season").textContent =
-            league.season;
-
-        document.getElementById("scoring").textContent =
-            league.scoring_settings.rec === 1 ? "PPR" : "Custom";
-
+        
+        
     })
     .catch(error => {
         console.error("Error loading Sleeper league:", error);
@@ -156,27 +146,29 @@ Promise.all([
 
 
         const wins =
-            roster.settings?.wins || 0;
+    roster.settings?.wins || 0;
 
+const losses =
+    roster.settings?.losses || 0;
 
-        const losses =
-            roster.settings?.losses || 0;
+const ties =
+    roster.settings?.ties || 0;
 
-
-        const points =
-            (roster.settings?.fpts || 0) +
-            ((roster.settings?.fpts_decimal || 0) / 100);
+const points =
+    (roster.settings?.fpts || 0) +
+    ((roster.settings?.fpts_decimal || 0) / 100);
 
 
         return {
 
-            teamName: teamName,
-            managerName: managerName,
-            wins: wins,
-            losses: losses,
-            points: points
+    teamName: teamName,
+    managerName: managerName,
+    wins: wins,
+    losses: losses,
+    ties: ties,
+    points: points
 
-        };
+};
 
     });
 
@@ -205,19 +197,19 @@ Promise.all([
 
         row.innerHTML = `
 
-            <td>${index + 1}</td>
+    <td>${index + 1}</td>
 
-            <td>${team.teamName}</td>
+    <td>${team.teamName}</td>
 
-            <td>${team.managerName}</td>
+    <td>${team.managerName}</td>
 
-            <td>${team.wins}</td>
+    <td>
+        ${team.wins}-${team.losses}${team.ties > 0 ? `-${team.ties}` : ""}
+    </td>
 
-            <td>${team.losses}</td>
+    <td>${team.points.toFixed(2)}</td>
 
-            <td>${team.points.toFixed(2)}</td>
-
-        `;
+	`;
 
 
         standingsBody.appendChild(row);
@@ -1100,29 +1092,28 @@ function loadLeaguePulse() {
 
 
                 const wins =
-                    roster.settings?.wins || 0;
+    roster.settings?.wins || 0;
 
+const losses =
+    roster.settings?.losses || 0;
 
-                const losses =
-                    roster.settings?.losses || 0;
+const ties =
+    roster.settings?.ties || 0;
 
-
-                const points =
-                    (roster.settings?.fpts || 0) +
-                    (
-                        (roster.settings?.fpts_decimal || 0)
-                        / 100
-                    );
+const points =
+    (roster.settings?.fpts || 0) +
+    ((roster.settings?.fpts_decimal || 0) / 100);
 
 
                 return {
 
-                    teamName,
-                    wins,
-                    losses,
-                    points
+    teamName: teamName,
+    wins: wins,
+    losses: losses,
+    ties: ties,
+    points: points
 
-                };
+};
 
             });
 
