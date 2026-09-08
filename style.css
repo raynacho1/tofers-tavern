@@ -775,18 +775,14 @@ html {
 .matchup-lineups {
     display: grid;
     grid-template-columns: 1fr 1fr;
-
-    gap: 30px;
-
-    margin-top: 35px;
+    gap: 24px;
+    align-items: start;
 }
 
 .matchup-lineup {
-    background-color: var(--nav);
-
-    border-radius: 10px;
-
-    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 18px;
 }
 
 .matchup-lineup h3 {
@@ -1751,3 +1747,500 @@ main section > h2 {
 
 }
 
+.clickable-matchup {
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.clickable-matchup:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.matchup-group-label {
+    color: var(--orange);
+
+    font-family: "Teko", sans-serif;
+
+    font-size: 18px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin: 14px 0 6px;
+}
+
+
+.matchup-bench-label {
+    margin-top: 28px;
+
+    padding-top: 18px;
+
+    border-top:
+        2px solid
+        rgba(227, 82, 5, 0.35);
+}
+
+
+.bench-matchup-slot {
+    color: var(--muted);
+}
+
+/* FORCE DESKTOP MATCHUP TO TWO COLUMNS */
+
+@media (min-width: 769px) {
+
+    .matchup-lineups {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 24px !important;
+        align-items: start;
+    }
+
+    .matchup-lineup {
+        min-width: 0;
+    }
+
+}
+
+
+/* PHONE MATCHUP STACKS VERTICALLY */
+
+@media (max-width: 768px) {
+
+    .matchup-lineups {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+    }
+
+}
+
+.matchup-only-page {
+    padding-top: 30px;
+}
+
+.game-of-week-section {
+    margin-top: 55px;
+}
+
+.game-of-week-heading {
+    margin-bottom: 18px;
+}
+
+.game-of-week-heading span {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.game-of-week-heading h2 {
+    margin-top: 3px;
+}
+
+.game-of-week-card {
+    background-color: var(--surface);
+
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+
+    padding: 30px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.game-of-week-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.game-of-week-teams {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.game-of-week-team {
+    text-align: center;
+}
+
+.game-of-week-avatar {
+    width: 85px;
+    height: 85px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    margin-bottom: 10px;
+}
+
+.game-of-week-team h3 {
+    font-size: 22px;
+
+    margin: 5px 0;
+}
+
+.game-of-week-manager {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.game-of-week-score {
+    color: var(--orange);
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    margin-top: 10px;
+}
+
+.game-of-week-vs {
+    font-family: "Teko", sans-serif;
+
+    color: var(--orange);
+
+    font-size: 36px;
+
+    font-weight: bold;
+}
+
+.game-of-week-footer {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 25px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid var(--border);
+}
+
+@media (max-width: 650px) {
+
+    .game-of-week-teams {
+        grid-template-columns: 1fr;
+    }
+
+    .game-of-week-vs {
+        margin: -5px 0;
+    }
+
+}.game-of-week-section {
+    margin-top: 55px;
+}
+
+.game-of-week-heading {
+    margin-bottom: 18px;
+}
+
+.game-of-week-heading span {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.game-of-week-heading h2 {
+    margin-top: 3px;
+}
+
+.game-of-week-card {
+    background-color: var(--surface);
+
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+
+    padding: 30px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.game-of-week-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.game-of-week-teams {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.game-of-week-team {
+    text-align: center;
+}
+
+.game-of-week-avatar {
+    width: 85px;
+    height: 85px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    margin-bottom: 10px;
+}
+
+.game-of-week-team h3 {
+    font-size: 22px;
+
+    margin: 5px 0;
+}
+
+.game-of-week-manager {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.game-of-week-score {
+    color: var(--orange);
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    margin-top: 10px;
+}
+
+.game-of-week-vs {
+    font-family: "Teko", sans-serif;
+
+    color: var(--orange);
+
+    font-size: 36px;
+
+    font-weight: bold;
+}
+
+.game-of-week-footer {
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 25px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid var(--border);
+}
+
+@media (max-width: 650px) {
+
+    .game-of-week-teams {
+        grid-template-columns: 1fr;
+    }
+
+    .game-of-week-vs {
+        margin: -5px 0;
+    }
+
+}
+
+/* =========================
+   WEEKLY RECAP
+========================= */
+
+.recap-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 55px 30px 90px;
+}
+
+.recap-header {
+    margin-bottom: 50px;
+}
+
+.recap-header h1 {
+    font-family: "Teko", sans-serif;
+    font-size: 52px;
+    margin: 0;
+}
+
+.recap-kicker {
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.recap-page section {
+    margin-bottom: 55px;
+}
+
+.recap-story-card,
+.recap-message {
+    background: var(--surface);
+    border-left: 5px solid var(--orange);
+    border-radius: 10px;
+    padding: 25px;
+    line-height: 1.7;
+    font-size: 17px;
+}
+
+.recap-story-card strong {
+    color: var(--orange);
+}
+
+.recap-message {
+    text-align: center;
+}
+
+.recap-message-icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+#recap-awards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.recap-award-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.recap-award-label {
+    color: var(--orange);
+    font-family: "Teko", sans-serif;
+    font-size: 20px;
+}
+
+.recap-award-card strong {
+    font-size: 17px;
+}
+
+.recap-award-card > span:last-child {
+    color: var(--muted);
+}
+
+#recap-games {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.recap-game-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 15px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.recap-game-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--orange);
+}
+
+.recap-game-team {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+}
+
+.recap-game-team span {
+    color: var(--orange);
+    font-weight: bold;
+    font-size: 21px;
+}
+
+.recap-game-vs {
+    color: var(--muted);
+    font-family: "Teko", sans-serif;
+    font-size: 22px;
+}
+
+
+/* TABLET */
+
+@media (max-width: 850px) {
+
+    #recap-awards {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    #recap-games {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* PHONE */
+
+@media (max-width: 480px) {
+
+    .recap-page {
+        padding:
+            35px 16px 70px;
+    }
+
+    .recap-header h1 {
+        font-size: 42px;
+    }
+
+    #recap-awards {
+        grid-template-columns: 1fr;
+    }
+
+}

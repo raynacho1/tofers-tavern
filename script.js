@@ -320,6 +320,12 @@ fetch(`https://api.sleeper.app/v1/league/${leagueID}`)
 
 
                 matchupCard.classList.add("matchup-card");
+		
+		const firstRoster =
+   		rostersByID[teams[0].roster_id];
+
+		const firstUser =
+    		usersByID[firstRoster.owner_id];
 
 
                 let teamsHTML = "";
@@ -417,7 +423,23 @@ fetch(`https://api.sleeper.app/v1/league/${leagueID}`)
 
                 `;
 
+		if (firstUser?.user_id) {
 
+    matchupCard.classList.add(
+        "clickable-matchup"
+    );
+
+    matchupCard.addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                `team.html?user=${firstUser.user_id}#team-matchup`;
+
+        }
+    );
+
+}
                 matchupsContainer.appendChild(matchupCard);
 
             });
@@ -1273,6 +1295,396 @@ function loadLeaguePulse() {
 
 
 loadLeaguePulse();
+
+function loadGameOfTheWeek() {
+
+    Promise.all([
+
+        fetch(
+            `https://api.sleeper.app/v1/league/${leagueID}`
+        ).then(response => response.json()),
+
+
+        fetch(
+            `https://api.sleeper.app/v1/league/${leagueID}/users`
+        ).then(response => response.json()),
+
+
+        fetch(
+            `https://api.sleeper.app/v1/league/${leagueID}/rosters`
+        ).then(response => response.json())
+
+    ])
+
+    .then(([league, users, rosters]) => {
+
+
+        const currentWeek =
+            league.settings.leg;
+
+
+        return fetch(
+            `https://api.sleeper.app/v1/league/${leagueID}/matchups/${currentWeek}`
+        )
+
+        .then(response => response.json())
+
+        .then(matchups => {
+
+            return {
+                league,
+                users,
+                rosters,
+                matchups,
+                currentWeek
+            };
+
+        });
+
+    })
+
+
+    .then(data => {
+
+        const {
+            users,
+            rosters,
+            matchups,
+            currentWeek
+        } = data;
+
+
+        const usersByID = {};
+
+        users.forEach(user => {
+
+            usersByID[user.user_id] =
+                user;
+
+        });
+
+
+        const rostersByID = {};
+
+        rosters.forEach(roster => {
+
+            rostersByID[
+                roster.roster_id
+            ] = roster;
+
+        });
+
+
+        const matchupGroups = {};
+
+
+        matchups.forEach(team => {
+
+            if (
+                team.matchup_id == null
+            ) {
+                return;
+            }
+
+
+            if (
+                !matchupGroups[
+                    team.matchup_id
+                ]
+            ) {
+
+                matchupGroups[
+                    team.matchup_id
+                ] = [];
+
+            }
+
+
+            matchupGroups[
+                team.matchup_id
+            ].push(team);
+
+        });
+
+
+        const matchupOptions = [];
+
+
+        Object.values(
+            matchupGroups
+        ).forEach(matchup => {
+
+
+            if (
+                matchup.length !== 2
+            ) {
+                return;
+            }
+
+
+            const teamA =
+                matchup[0];
+
+            const teamB =
+                matchup[1];
+
+
+            const rosterA =
+                rostersByID[
+                    teamA.roster_id
+                ];
+
+
+            const rosterB =
+                rostersByID[
+                    teamB.roster_id
+                ];
+
+
+            const pointsA =
+                (
+                    rosterA.settings?.fpts ||
+                    0
+                )
+                +
+                (
+                    (
+                        rosterA.settings
+                            ?.fpts_decimal ||
+                        0
+                    ) / 100
+                );
+
+
+            const pointsB =
+                (
+                    rosterB.settings?.fpts ||
+                    0
+                )
+                +
+                (
+                    (
+                        rosterB.settings
+                            ?.fpts_decimal ||
+                        0
+                    ) / 100
+                );
+
+
+            matchupOptions.push({
+
+                teamA,
+                teamB,
+                rosterA,
+                rosterB,
+
+                combinedPoints:
+                    pointsA + pointsB
+
+            });
+
+        });
+
+
+        matchupOptions.sort(
+            (a, b) =>
+                b.combinedPoints -
+                a.combinedPoints
+        );
+
+
+        const featured =
+            matchupOptions[0];
+
+
+        if (!featured) {
+
+            document.getElementById(
+                "game-of-week-container"
+            ).innerHTML =
+                "No featured matchup available.";
+
+            return;
+
+        }
+
+
+        const userA =
+            usersByID[
+                featured.rosterA.owner_id
+            ];
+
+
+        const userB =
+            usersByID[
+                featured.rosterB.owner_id
+            ];
+
+
+        const teamNameA =
+            userA?.metadata?.team_name ||
+            userA?.display_name ||
+            "Team A";
+
+
+        const teamNameB =
+            userB?.metadata?.team_name ||
+            userB?.display_name ||
+            "Team B";
+
+
+        const managerA =
+            userA?.display_name ||
+            "Unknown";
+
+
+        const managerB =
+            userB?.display_name ||
+            "Unknown";
+
+
+        const avatarA =
+            userA?.avatar
+                ?
+                `
+                    <img
+                        class="game-of-week-avatar"
+                        src="https://sleepercdn.com/avatars/thumbs/${userA.avatar}"
+                        alt="${managerA}"
+                    >
+                `
+                :
+                "";
+
+
+        const avatarB =
+            userB?.avatar
+                ?
+                `
+                    <img
+                        class="game-of-week-avatar"
+                        src="https://sleepercdn.com/avatars/thumbs/${userB.avatar}"
+                        alt="${managerB}"
+                    >
+                `
+                :
+                "";
+
+
+        const scoreA =
+            featured.teamA.points || 0;
+
+
+        const scoreB =
+            featured.teamB.points || 0;
+
+
+        document.getElementById(
+            "game-of-week-title"
+        ).textContent =
+            `Week ${currentWeek} Game of the Week`;
+
+
+        const container =
+            document.getElementById(
+                "game-of-week-container"
+            );
+
+
+        container.innerHTML = `
+
+            <div class="game-of-week-card">
+
+                <div class="game-of-week-teams">
+
+                    <div class="game-of-week-team">
+
+                        ${avatarA}
+
+                        <h3>
+                            ${teamNameA}
+                        </h3>
+
+                        <div class="game-of-week-manager">
+                            ${managerA}
+                        </div>
+
+                        <div class="game-of-week-score">
+                            ${scoreA.toFixed(2)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="game-of-week-vs">
+                        VS
+                    </div>
+
+
+                    <div class="game-of-week-team">
+
+                        ${avatarB}
+
+                        <h3>
+                            ${teamNameB}
+                        </h3>
+
+                        <div class="game-of-week-manager">
+                            ${managerB}
+                        </div>
+
+                        <div class="game-of-week-score">
+                            ${scoreB.toFixed(2)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="game-of-week-footer">
+
+                    Highest combined season scoring matchup
+                    •
+                    Click to view full matchup
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container
+            .querySelector(
+                ".game-of-week-card"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    window.location.href =
+                        `team.html?user=${userA.user_id}#team-matchup`;
+
+                }
+            );
+
+    })
+
+
+    .catch(error => {
+
+        console.error(
+            "Error loading Game of the Week:",
+            error
+        );
+
+    });
+
+}
+
+
+loadGameOfTheWeek();
 
 
 

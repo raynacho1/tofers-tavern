@@ -10,7 +10,54 @@ const urlParams =
 
 const userID =
     urlParams.get("user");
+const matchupView =
+    window.location.hash === "#team-matchup";
 
+const teamProfile =
+    document.querySelector(".team-profile");
+
+const teamStats =
+    document.querySelector(".team-stats");
+
+const matchupSection =
+    document.querySelector(".team-week-section");
+
+const rosterSection =
+    document.querySelector(".team-roster-section");
+
+
+if (matchupView) {
+
+    document
+    .querySelector(".team-page")
+    ?.classList.add("matchup-only-page");
+
+    if (teamProfile) {
+        teamProfile.style.display = "none";
+    }
+
+    if (teamStats) {
+        teamStats.style.display = "none";
+    }
+
+    if (rosterSection) {
+        rosterSection.style.display = "none";
+    }
+
+    if (matchupSection) {
+        matchupSection.style.display = "block";
+    }
+
+} else {
+
+    // TEAM PAGE:
+    // hide weekly head-to-head matchup
+
+    if (matchupSection) {
+        matchupSection.style.display = "none";
+    }
+
+}
 
 let nflPlayers = {};
 
@@ -579,76 +626,108 @@ if (myScore > opponentScore) {
                     league
                 );
 
+const myBench =
+    buildMatchupBench(
+        myMatchup,
+        roster
+    );
+
+
+const opponentBench =
+    buildMatchupBench(
+        opponentMatchup,
+        opponentRoster
+    );
 
             document.getElementById(
-                "team-week-matchup"
-            ).innerHTML = `
+    "team-week-matchup"
+).innerHTML = `
 
-                <div class="team-page-matchup">
+    <div class="team-page-matchup">
 
-    <div class="weekly-team ${myTeamClass}">
+        <div class="weekly-team ${myTeamClass}">
 
-        ${myAvatar}
+            ${myAvatar}
 
-        <h3>
-            ${myTeamName}
-        </h3>
+            <h3>
+                ${myTeamName}
+            </h3>
 
-        <div class="weekly-score">
-            ${myScore.toFixed(2)}
+            <div class="weekly-score">
+                ${myScore.toFixed(2)}
+            </div>
+
+        </div>
+
+
+        <div class="weekly-vs">
+            VS
+        </div>
+
+
+        <div class="weekly-team ${opponentTeamClass}">
+
+            ${opponentAvatar}
+
+            <h3>
+                ${opponentTeamName}
+            </h3>
+
+            <div class="weekly-score">
+                ${opponentScore.toFixed(2)}
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="weekly-vs">
-        VS
-    </div>
+    <div class="matchup-lineups">
+
+        <div class="matchup-lineup">
+
+            <h3>
+                ${myTeamName}
+            </h3>
+
+            <div class="matchup-group-label">
+                Starting Lineup
+            </div>
+
+            ${myLineup}
+
+            <div class="matchup-group-label matchup-bench-label">
+                Bench
+            </div>
+
+            ${myBench}
+
+        </div>
 
 
-    <div class="weekly-team ${opponentTeamClass}">
+        <div class="matchup-lineup">
 
-        ${opponentAvatar}
+            <h3>
+                ${opponentTeamName}
+            </h3>
 
-        <h3>
-            ${opponentTeamName}
-        </h3>
+            <div class="matchup-group-label">
+                Starting Lineup
+            </div>
 
-        <div class="weekly-score">
-            ${opponentScore.toFixed(2)}
+            ${opponentLineup}
+
+            <div class="matchup-group-label matchup-bench-label">
+                Bench
+            </div>
+
+            ${opponentBench}
+
         </div>
 
     </div>
 
-</div>
-
-
-                <div class="matchup-lineups">
-
-                    <div class="matchup-lineup">
-
-                        <h3>
-                            ${myTeamName}
-                        </h3>
-
-                        ${myLineup}
-
-                    </div>
-
-
-                    <div class="matchup-lineup">
-
-                        <h3>
-                            ${opponentTeamName}
-                        </h3>
-
-                        ${opponentLineup}
-
-                    </div>
-
-                </div>
-
-            `;
+`;
 
         })
 
@@ -1008,3 +1087,155 @@ function buildMatchupLineup(
 
 }
 
+function buildMatchupBench(
+    matchupTeam,
+    roster
+) {
+
+    const starters =
+        matchupTeam.starters ||
+        roster.starters ||
+        [];
+
+
+    const starterIDs =
+        new Set(
+            starters.map(
+                playerID =>
+                    String(playerID)
+            )
+        );
+
+
+    const reserveIDs =
+        new Set(
+            (roster.reserve || [])
+                .map(
+                    playerID =>
+                        String(playerID)
+                )
+        );
+
+
+    const benchIDs =
+        (roster.players || [])
+            .filter(playerID => {
+
+                const id =
+                    String(playerID);
+
+
+                return (
+                    !starterIDs.has(id) &&
+                    !reserveIDs.has(id)
+                );
+
+            });
+
+
+    let benchHTML = "";
+
+
+    benchIDs.forEach(playerID => {
+
+        const player =
+            nflPlayers[playerID];
+
+
+        if (!player) {
+            return;
+        }
+
+
+        let playerName;
+
+
+        if (player.position === "DEF") {
+
+            playerName =
+                `${player.team} Defense`;
+
+        } else {
+
+            playerName =
+                player.full_name ||
+                "Unknown Player";
+
+        }
+
+
+        const playerPoints =
+            matchupTeam
+                .players_points
+                ?.[playerID] || 0;
+
+
+        let playerImage;
+
+
+        if (player.position === "DEF") {
+
+            playerImage = `
+
+                <div class="matchup-player-photo defense-logo">
+                    ${player.team}
+                </div>
+
+            `;
+
+        } else {
+
+            playerImage = `
+
+                <img
+                    class="matchup-player-photo"
+                    src="https://sleepercdn.com/content/nfl/players/${playerID}.jpg"
+                    alt="${playerName}"
+                    onerror="this.style.display='none'"
+                >
+
+            `;
+
+        }
+
+
+        benchHTML += `
+
+            <div class="matchup-lineup-row">
+
+                <span class="matchup-slot bench-matchup-slot">
+                    BN
+                </span>
+
+                ${playerImage}
+
+
+                <div class="matchup-player-info">
+
+                    <strong>
+                        ${playerName}
+                    </strong>
+
+                    <span>
+                        ${player.team || "FA"}
+                        •
+                        ${player.position}
+                    </span>
+
+                </div>
+
+
+                <span class="matchup-player-score">
+                    ${playerPoints.toFixed(2)}
+                </span>
+
+            </div>
+
+        `;
+
+    });
+
+
+    return benchHTML;
+
+}
