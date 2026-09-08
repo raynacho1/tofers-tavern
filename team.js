@@ -588,6 +588,140 @@ function displayWeeklyMatchup(
             const opponentScore =
                 opponentMatchup.points || 0;
 
+		const matchupNavigation =
+    document.getElementById("matchup-navigation");
+
+
+if (matchupNavigation && matchupView) {
+
+    // Get all matchup IDs for this week
+    const matchupIDs =
+        [...new Set(
+            matchups
+                .map(team => team.matchup_id)
+                .filter(id => id != null)
+        )]
+        .sort((a, b) => a - b);
+
+
+    const currentMatchupIndex =
+        matchupIDs.findIndex(
+            id => id === myMatchup.matchup_id
+        );
+
+
+    // Finds one manager from a matchup so we can
+    // use their team page to open matchup mode
+    function getUserForMatchup(matchupID) {
+
+        const matchupTeam =
+            matchups.find(
+                team =>
+                    team.matchup_id === matchupID
+            );
+
+
+        if (!matchupTeam) {
+            return null;
+        }
+
+
+        const matchupRoster =
+            rosters.find(
+                team =>
+                    team.roster_id ===
+                    matchupTeam.roster_id
+            );
+
+
+        if (!matchupRoster) {
+            return null;
+        }
+
+
+        return users.find(
+            user =>
+                user.user_id ===
+                matchupRoster.owner_id
+        );
+
+    }
+
+
+    // Wrap around when reaching first/last matchup
+    const previousIndex =
+        currentMatchupIndex === 0
+            ? matchupIDs.length - 1
+            : currentMatchupIndex - 1;
+
+
+    const nextIndex =
+        currentMatchupIndex ===
+        matchupIDs.length - 1
+            ? 0
+            : currentMatchupIndex + 1;
+
+
+    const previousUser =
+        getUserForMatchup(
+            matchupIDs[previousIndex]
+        );
+
+
+    const nextUser =
+        getUserForMatchup(
+            matchupIDs[nextIndex]
+        );
+
+
+    const navWeek =
+        league.settings?.leg || "";
+
+
+    matchupNavigation.innerHTML = `
+
+        <a
+            class="matchup-nav-link"
+            href="team.html?user=${previousUser.user_id}#team-matchup"
+        >
+            ← Previous
+        </a>
+
+
+        <div class="matchup-nav-middle">
+
+            <span>
+                Week ${navWeek}
+                •
+                Matchup ${currentMatchupIndex + 1}
+                of ${matchupIDs.length}
+            </span>
+
+            <a href="index.html#matchups">
+                View All
+            </a>
+
+        </div>
+
+
+        <a
+            class="matchup-nav-link"
+            href="team.html?user=${nextUser.user_id}#team-matchup"
+        >
+            Next →
+        </a>
+
+    `;
+
+}
+
+else if (matchupNavigation) {
+
+    matchupNavigation.style.display =
+        "none";
+
+}
+
 	let myTeamClass = "";
 let opponentTeamClass = "";
 
