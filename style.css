@@ -2451,3 +2451,66 @@ main section > h2 {
     }
 
 }
+
+/* SIDE-BY-SIDE MATCHUP ROSTERS ON PHONES */
+
+@media (max-width: 768px) {
+
+    .matchup-lineups {
+        display: grid !important;
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr) !important;
+
+        gap: 8px !important;
+        align-items: start;
+    }
+
+    .matchup-lineup {
+        padding: 8px;
+        min-width: 0;
+    }
+
+    .matchup-lineup h3 {
+        font-size: 14px;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .matchup-lineup-row {
+        grid-template-columns:
+            28px minmax(0, 1fr) 32px;
+
+        gap: 4px;
+
+        padding: 8px 0;
+    }
+
+    .matchup-player-photo {
+        display: none;
+    }
+
+    .matchup-slot {
+        font-size: 10px;
+    }
+
+    .matchup-player-info strong {
+        font-size: 11px;
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+    }
+
+    .matchup-player-info span {
+        font-size: 9px;
+    }
+
+    .matchup-player-score {
+        font-size: 11px;
+        text-align: right;
+    }
+
+    .matchup-group-label {
+        font-size: 14px;
+    }
+
+}
